@@ -2,6 +2,7 @@ import numpy as np
 
 from Point import Point
 
+SIFT_SUFFIX = '.haraff.sift'
 
 def load_file(path):
     res = []
@@ -15,3 +16,7 @@ def load_file(path):
             array = np.array(line[5:], dtype=int)
             res.append(Point(x, y, array))
     return res
+
+def load_sifts(images):
+    sift_paths = list(map(lambda x: x + SIFT_SUFFIX, images))
+    return tuple(map(load_file, sift_paths))
