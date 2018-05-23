@@ -1,4 +1,5 @@
 import adjacency
+import ransac
 from utils import csv_writer
 from utils import loader
 from utils import printer
@@ -17,6 +18,8 @@ def main():
     printer.print_image(CURRENT, filtered)
     csv_writer.save(pairs, 'image1_all.txt')
     csv_writer.save(filtered, 'image1_n5_t08.txt')
+    a = ransac.calculate_model([filtered[0], filtered[1], filtered[2]])
+    print(a)
 
 
 if __name__ == "__main__":
