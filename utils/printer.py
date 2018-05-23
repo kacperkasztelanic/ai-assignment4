@@ -17,10 +17,10 @@ def print_image(image_paths, pairs):
 
     draw = ImageDraw.Draw(new_im)
     for pair in pairs:
-        x1 = pair[0].x
-        y1 = pair[0].y
-        x2 = pair[1].x + x_offset
-        y2 = pair[1].y
+        x1 = pair[0].coords[0]
+        y1 = pair[0].coords[1]
+        x2 = pair[1].coords[0] + x_offset
+        y2 = pair[1].coords[1]
         color = tuple(np.random.randint(256, size=3))
         draw.line((x1, y1, x2, y2), fill=color)
     result_path = os.path.join(os.path.dirname(image_paths[0]), 'result.png')
