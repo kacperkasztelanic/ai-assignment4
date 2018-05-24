@@ -1,6 +1,8 @@
 import numpy as np
 from scipy.spatial import distance
+
 from Point import Point
+
 
 def is_invertible(a):
     return a.shape[0] == a.shape[1] and np.linalg.matrix_rank(a) == a.shape[0]
@@ -34,8 +36,7 @@ def perspective_array(x1, y1, x2, y2, x3, y3, x4, y4, u1, v1, u2, v2, u3, v3, u4
     if not is_invertible(a1):
         return None
     a = np.linalg.inv(a1) @ a2
-    a = np.append(a, 1)
-    res = np.reshape(a, newshape=(3, 3))
+    res = np.reshape(np.append(a, 1), newshape=(3, 3))
     return res
 
 
@@ -94,4 +95,3 @@ def ransac_pairs(pairs, model):
         temp = model @ np.array([pair[0].coords[0], pair[0].coords[1], 1])
         transformed_pairs.append((pair[0], Point((temp[0], temp[1]), pair[1].vector)))
     return transformed_pairs
-
