@@ -93,5 +93,5 @@ def ransac_pairs(pairs, model):
     transformed_pairs = []
     for pair in pairs:
         temp = model @ np.array([pair[0].coords[0], pair[0].coords[1], 1])
-        transformed_pairs.append((pair[0], Point((temp[0], temp[1]), pair[1].vector)))
+        transformed_pairs.append((pair[0], Point((temp[0], temp[1]))))
     return transformed_pairs

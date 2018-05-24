@@ -1,6 +1,6 @@
 import numpy as np
 
-from Point import Point
+from Point import FeaturedPoint
 
 SIFT_SUFFIX = '.haraff.sift'
 
@@ -15,7 +15,7 @@ def load_file(path):
             x = float(line[0])
             y = float(line[1])
             array = np.array(line[5:], dtype=int)
-            res.append(Point([x, y], array))
+            res.append(FeaturedPoint([x, y], array))
     return res
 
 
