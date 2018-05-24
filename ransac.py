@@ -53,15 +53,14 @@ def calc_model(samples):
     u3 = samples[2][1].coords[0]
     v3 = samples[2][1].coords[1]
     if len(samples) == 3:
-        A = affine_array(x1, y1, x2, y2, x3, y3, u1, v1, u2, v2, u3, v3)
-        return A
+        a = affine_array(x1, y1, x2, y2, x3, y3, u1, v1, u2, v2, u3, v3)
     else:
         x4 = samples[3][0].coords[0]
         y4 = samples[3][0].coords[1]
         u4 = samples[3][1].coords[0]
         v4 = samples[3][1].coords[1]
-        A = perspective_array(x1, y1, x2, y2, x3, y3, x4, y4, u1, v1, u2, v2, u3, v3, u4, v4)
-        return A
+        a = perspective_array(x1, y1, x2, y2, x3, y3, x4, y4, u1, v1, u2, v2, u3, v3, u4, v4)
+    return a
 
 
 def model_error(model, pair):
