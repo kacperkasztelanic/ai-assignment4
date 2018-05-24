@@ -4,7 +4,7 @@ import numpy as np
 from PIL import Image, ImageDraw
 
 
-def print_image(image_paths, pairs):
+def print_image(image_paths, pairs, filename):
     images = list(map(Image.open, image_paths))
     widths, heights = zip(*(i.size for i in images))
     total_width = sum(widths)
@@ -23,5 +23,5 @@ def print_image(image_paths, pairs):
         y2 = pair[1].coords[1]
         color = tuple(np.random.randint(256, size=3))
         draw.line((x1, y1, x2, y2), fill=color)
-    result_path = os.path.join(os.path.dirname(image_paths[0]), 'result.png')
+    result_path = os.path.join(os.path.dirname(image_paths[0]), filename)
     new_im.save(result_path)

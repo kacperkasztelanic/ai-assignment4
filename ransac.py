@@ -1,6 +1,6 @@
 import numpy as np
 from scipy.spatial import distance
-
+from Point import Point
 
 def is_invertible(a):
     return a.shape[0] == a.shape[1] and np.linalg.matrix_rank(a) == a.shape[0]
@@ -68,13 +68,13 @@ def model_error(model, pair):
                           np.array([pair[1].coords[0], pair[1].coords[1], 1]).reshape(-1, 1), metric='euclidean').flatten()[0]
 
 
-def ransac(pairs, iter, n, max_error):
+def ransac_model(pairs, s, iter, max_error):
     best_model = None
     best_score = 0
     for i in range(iter):
         model = None
         while model is None:
-            indices = np.random.choice(pairs.shape[0], size=n)
+            indices = np.random.choice(pairs.shape[0], size=s)
             chosen = pairs[indices]
             model = calc_model(chosen)
         score = 0
@@ -86,3 +86,12 @@ def ransac(pairs, iter, n, max_error):
             best_score = score
             best_model = model
     return best_model
+
+
+def ransac_pairs(pairs, model):
+    transformed_pairs = []
+    for pair in pairs:
+        temp = model @ np.array([pair[0].coords[0], pair[0].coords[1], 1])
+        transformed_pairs.append((pair[0], Point((temp[0], temp[1]), pair[1].vector)))
+    return transformed_pairs
+

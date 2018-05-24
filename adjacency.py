@@ -23,7 +23,7 @@ def filter_pairs(pairs, n, threshold):
     neighbors2 = get_n_smallest(dist2, n)
     consistency = get_equivalent_size(neighbors1, neighbors2)
     indexes = selection(consistency, threshold)
-    return np.asarray(pairs)[indexes]
+    return np.array(pairs)[indexes]
 
 
 def calc_dist(points):

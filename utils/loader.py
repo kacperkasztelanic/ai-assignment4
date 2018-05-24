@@ -15,7 +15,7 @@ def load_file(path):
             x = float(line[0])
             y = float(line[1])
             array = np.array(line[5:], dtype=int)
-            res.append(Point([x, y], array, i))
+            res.append(Point([x, y], array))
     return res
 
 

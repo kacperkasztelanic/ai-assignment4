@@ -1,6 +1,5 @@
 import adjacency
 import ransac
-from utils import csv_writer
 from utils import loader
 from utils import printer
 from utils.timing import timing
@@ -16,13 +15,18 @@ CURRENT = IMAGES_1
 def main():
     s1, s2 = loader.load_sifts(CURRENT)
     pairs = adjacency.find_pairs_euclidean(s1, s2)
-    filtered = adjacency.filter_pairs(pairs, 5, 0.8)
-    printer.print_image(CURRENT, filtered)
-    csv_writer.save(pairs, 'image1_all.txt')
-    csv_writer.save(filtered, 'image1_n5_t08.txt')
-    a = ransac.calc_model([filtered[0], filtered[1], filtered[2], filtered[3]])
-    r = ransac.ransac(filtered, 50, 3, 30)
-    print(r)
+
+    n = 25
+    t = 0.8
+    filtered_pairs = adjacency.filter_pairs(pairs, n=n, threshold=t)
+    printer.print_image(CURRENT, filtered_pairs, 'adjacency_n{}_t{}.png'.format(n, t))
+
+    i = 500
+    s = 3
+    e = 1
+    model = ransac.ransac_model(filtered_pairs, s=s, iter=i, max_error=e)
+    transformed_pairs = ransac.ransac_pairs(filtered_pairs, model)
+    printer.print_image(CURRENT, transformed_pairs, 'ransac_n{}_t{}_s{}_i{}_e{}.png'.format(n, t, s, i, e))
 
 
 if __name__ == "__main__":
