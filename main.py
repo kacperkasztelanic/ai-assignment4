@@ -13,11 +13,12 @@ CURRENT = IMAGES_1
 
 @timing
 def main():
-    s1, s2 = loader.load_sifts(CURRENT)
-    pairs = adjacency.find_pairs_euclidean(s1, s2)
+    key_points_1, key_points_2 = loader.load_sifts(CURRENT)
+    print(key_points_1)
+    pairs = adjacency.find_pairs_euclidean(key_points_1, key_points_2)
 
     n = 25
-    t = 0.8
+    t = 0.81
     filtered_pairs = adjacency.filter_pairs(pairs, n=n, threshold=t)
     printer.print_image(CURRENT, filtered_pairs, 'adjacency_n{}_t{}.png'.format(n, t))
 
@@ -25,8 +26,10 @@ def main():
     s = 3
     e = 1
     model = ransac.ransac_model(filtered_pairs, s=s, iter=i, max_error=e)
-    transformed_pairs = ransac.ransac_pairs(filtered_pairs, model)
-    printer.print_image(CURRENT, transformed_pairs, 'ransac_n{}_t{}_s{}_i{}_e{}.png'.format(n, t, s, i, e))
+    ransac_pairs = ransac.ransac_pairs(filtered_pairs, model)
+    printer.print_image(CURRENT, ransac_pairs, 'ransac_n{}_t{}_s{}_i{}_e{}.png'.format(n, t, s, i, e))
+    printer.print_all_image(CURRENT, key_points_1, key_points_2, filtered_pairs, ransac_pairs,
+                            'all_ransac_n{}_t{}_s{}_i{}_e{}.png'.format(n, t, s, i, e))
 
 
 if __name__ == "__main__":

@@ -8,8 +8,8 @@ def find_pairs_euclidean(l1, l2):
     distances = distance.cdist(v1, v2, metric='euclidean')
     pairs = []
     for i in range(len(l1)):
-        corresponding = np.argmin(distances[i, :])
-        if (i == np.argmin(distances[:, corresponding])):
+        corresponding = np.argmin(distances[i])
+        if i == np.argmin(distances[:, corresponding]):
             pairs.append((l1[i], l2[corresponding]))
     return pairs
 
