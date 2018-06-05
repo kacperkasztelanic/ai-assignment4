@@ -7,14 +7,21 @@ from utils.timing import timing
 IMAGES_1 = ['data/1/DSC03230.png', 'data/1/DSC03240.png']
 IMAGES_2 = ['data/2/DSC_5824.png', 'data/2/DSC_5825.png']
 IMAGES_3 = ['data/3/3-1.png', 'data/3/3-2.png']
+IMAGES_4 = ['data/4/4-1.png', 'data/4/4-2.png']
+IMAGES_5 = ['data/5/5-1.png', 'data/5/5-2.png']
+IMAGES_7 = ['data/7/7-1.png', 'data/7/7-2.png']
+IMAGES_8 = ['data/8/8-1.png', 'data/8/8-2.png']
+IMAGES_p1 = ['data/p1/p1-1.png', 'data/p1/p1-2.png']
+IMAGES_p2 = ['data/p2/p2-1.png', 'data/p2/p2-2.png']
+IMAGES_p3 = ['data/p3/p3-1.png', 'data/p3/p3-2.png']
 
-PATHS = IMAGES_1
+
+PATHS = IMAGES_4
 
 
 @timing
 def main():
     key_points_1, key_points_2 = loader.load_sifts(PATHS)
-    print(key_points_1)
     pairs = adjacency.find_pairs_euclidean(key_points_1, key_points_2)
 
     n = 25
