@@ -16,8 +16,10 @@ IMAGES_8 = ['data/8/8-1.png', 'data/8/8-2.png']
 IMAGES_p1 = ['data/p1/p1-1.png', 'data/p1/p1-2.png']
 IMAGES_p2 = ['data/p2/p2-1.png', 'data/p2/p2-2.png']
 IMAGES_p3 = ['data/p3/p3-1.png', 'data/p3/p3-2.png']
+IMAGES_p4 = ['data/p4/p4-1.png', 'data/p4/p4-2.png']
+IMAGES_p5 = ['data/p5/p5-1.png', 'data/p5/p5-2.png']
 
-PATHS = IMAGES_p3
+PATHS = IMAGES_p1
 
 
 @timing
@@ -31,7 +33,7 @@ def main():
     printer.print_image(PATHS, filtered_pairs, 'adjacency_n{}_t{}.png'.format(n, t))
 
     i = 500
-    size = 4
+    size = 3
     e = 1
     ransac_ = ransac.Ransac(PATHS, filtered_pairs, np.array(pairs),
                             heuristic=ransac.DistanceHeuristic.euclidean_distance_heuristic, lower_limit=0.1, upper_limit=0.3)
