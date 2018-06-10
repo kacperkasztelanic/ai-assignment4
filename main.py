@@ -26,7 +26,7 @@ PATHS = IMAGES[1]
 @timing
 def main():
     key_points_1, key_points_2 = loader.load_sifts(PATHS)
-    pairs = adjacency.find_pairs_euclidean(key_points_1, key_points_2)
+    pairs = adjacency.corresponding_points(key_points_1, key_points_2)
 
     n = 25
     t = 0.81
