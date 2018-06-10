@@ -1,11 +1,11 @@
+from timeit import default_timer as timer
+
 import adjacency
 import heuristic
 import ransac
 from utils import loader
 from utils import printer
 from utils.timing import timing
-from timeit import default_timer as timer
-import numpy as np
 
 IMAGES = {1: ['data/1/DSC03230.png', 'data/1/DSC03240.png'],
           2: ['data/2/DSC_5824.png', 'data/2/DSC_5825.png'],
@@ -20,7 +20,7 @@ IMAGES = {1: ['data/1/DSC03230.png', 'data/1/DSC03240.png'],
           11: ['data/p4/p4-1.png', 'data/p4/p4-2.png'],
           12: ['data/p5/p5-1.png', 'data/p5/p5-2.png']}
 
-PATHS = IMAGES[1]
+PATHS = IMAGES[12]
 
 
 @timing
@@ -28,16 +28,20 @@ def main():
     key_points_1, key_points_2 = loader.load_sifts(PATHS)
     pairs = adjacency.corresponding_points(key_points_1, key_points_2)
 
+    print('allPairs: {0}'.format(len(pairs)))
+    printer.print_image(PATHS, pairs, 'allPairs.png')
+
     n = 25
     t = 0.81
     filtered_pairs = adjacency.filter_pairs(pairs, n=n, threshold=t)
-    # printer.print_image(PATHS, filtered_pairs, 'adjacency_n{}_t{}.png'.format(n, t))
+    printer.print_image(PATHS, filtered_pairs, 'adjacency_n{}_t{}.png'.format(n, t))
+    print('filteredPairs: {0}'.format(len(filtered_pairs)))
     ransac_ = ransac.Ransac(pairs, filtered_pairs)
 
-    h = None
-    h = heuristic.EuclideanDistanceHeuristic(PATHS, lower_limit=0.00, upper_limit=0.3)
+    # h = None
+    # h = heuristic.EuclideanDistanceHeuristic(PATHS, lower_limit=0.00, upper_limit=0.3)
     h = heuristic.ShapeHeuristic(upper_limit=0.3)
-    i = 101
+    i = 500
     size = 3
     e = 10
     start = timer()
