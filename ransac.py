@@ -14,7 +14,7 @@ class Ransac:
         self.calculate_ransac_pairs(max_error)
 
     def ransac_model(self, size, no_draws, max_error, heuristic):
-        pairs = self.filtered_pairs
+        pairs = self.all_pairs
         best_model = None
         best_score = 0
         for i in range(no_draws):
@@ -72,6 +72,7 @@ def perspective_array(x1, y1, x2, y2, x3, y3, x4, y4, u1, v1, u2, v2, u3, v3, u4
     if not is_invertible(a1):
         return None
     a = np.linalg.inv(a1) @ a2
+    # noinspection PyTypeChecker
     res = np.reshape(np.append(a, 1), newshape=(3, 3))
     return res
 
@@ -83,7 +84,7 @@ def is_invertible(a):
 def model_error(model, pair):
     return distance.cdist(np.reshape(model @ np.array([pair[0].coords[0], pair[0].coords[1], 1]), newshape=(1, -1)),
                           np.array([pair[1].coords[0], pair[1].coords[1], 1]).reshape(1, -1),
-                          metric='euclidean').flatten()[0]
+                          metric='euclidean')
 
 
 def calc_model(samples):
