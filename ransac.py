@@ -72,6 +72,7 @@ def perspective_array(x1, y1, x2, y2, x3, y3, x4, y4, u1, v1, u2, v2, u3, v3, u4
     if not is_invertible(a1):
         return None
     a = np.linalg.inv(a1) @ a2
+    # noinspection PyTypeChecker
     res = np.reshape(np.append(a, 1), newshape=(3, 3))
     return res
 

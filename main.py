@@ -35,10 +35,11 @@ def main():
     ransac_ = ransac.Ransac(np.array(pairs), filtered_pairs)
 
     h = None
-    # h = heuristic.EuclideanDistanceHeuristic(PATHS, lower_limit=0.00, upper_limit=0.3)
-    i = 100
+    h = heuristic.EuclideanDistanceHeuristic(PATHS, lower_limit=0.00, upper_limit=0.3)
+    h = heuristic.ShapeHeuristic(upper_limit=0.3)
+    i = 101
     size = 3
-    e = 100
+    e = 5
     start = timer()
     ransac_.calculate(size=size, no_draws=i, max_error=e, heuristic=h)
     end = timer()
