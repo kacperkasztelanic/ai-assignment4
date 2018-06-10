@@ -81,8 +81,8 @@ def is_invertible(a):
 
 
 def model_error(model, pair):
-    return distance.cdist(np.reshape(model @ np.array([pair[0].coords[0], pair[0].coords[1], 1]), newshape=(-1, 1)),
-                          np.array([pair[1].coords[0], pair[1].coords[1], 1]).reshape(-1, 1),
+    return distance.cdist(np.reshape(model @ np.array([pair[0].coords[0], pair[0].coords[1], 1]), newshape=(1, -1)),
+                          np.array([pair[1].coords[0], pair[1].coords[1], 1]).reshape(1, -1),
                           metric='euclidean').flatten()[0]
 
 
