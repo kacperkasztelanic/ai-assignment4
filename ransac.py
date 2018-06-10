@@ -23,10 +23,10 @@ class Ransac:
             while model is None:
                 indices = np.random.choice(pairs.shape[0], size=size)
                 chosen = pairs[indices]
-                # if heuristic is None:
-                #     model = calc_model(chosen)
-                # else:
-                model = calc_model(chosen) if heuristic is None or heuristic.are_pairs_correct(chosen) else None
+                if heuristic is None:
+                    model = calc_model(chosen)
+                else:
+                    model = calc_model(chosen) if heuristic.are_pairs_correct(chosen) else None
             score = 0
             for pair in pairs:
                 score += 1 if model_error(model, pair) < max_error else 0

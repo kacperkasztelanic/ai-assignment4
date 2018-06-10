@@ -47,7 +47,7 @@ def main():
     print('ransac pairs: {}'.format(len(ransac_pairs)))
 
     s = size
-    # printer.print_image(PATHS, ransac_pairs, 'ransac_n{}_t{}_s{}_i{}_e{}.png'.format(n, t, s, i, e))
+    printer.print_image(PATHS, ransac_pairs, 'ransac_n{}_t{}_s{}_i{}_e{}.png'.format(n, t, s, i, e))
     printer.print_all_image(PATHS, key_points_1, key_points_2, filtered_pairs, ransac_pairs,
                             'all_ransac_n{}_t{}_s{}_i{}_e{}.png'.format(n, t, s, i, e))
 
