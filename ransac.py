@@ -9,7 +9,6 @@ class Ransac:
         self.model = None
         self._ransac_pairs = []
 
-
     def calculate(self, size, no_draws, max_error, heuristic=None):
         self.ransac_model(size, no_draws, max_error, heuristic)
         self.calculate_ransac_pairs(max_error)
@@ -40,13 +39,7 @@ class Ransac:
         for pair in self.filtered_pairs:
             if model_error(self.model, pair) < max_error:
                 self._ransac_pairs.append(pair)
-
-            # temp = self.model @ np.array([pair[0].coords[0], pair[0].coords[1], 1])
-            # if distance.cdist(np.reshape(pair[1].coords, newshape=(-1, 1)),
-            #                   np.reshape(np.array(temp[0], temp[1]), newshape=(-1, 1))).flatten()[0] < max_error:
-            #     # self._ransac_pairs.append((pair[0], Point((temp[0], temp[1]))))
-            #     self._ransac_pairs.append((pair[0], pair[1]))
-
+                
     def get_ransac_pairs(self):
         return self._ransac_pairs
 
