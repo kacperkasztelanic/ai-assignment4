@@ -52,4 +52,5 @@ def get_equivalent_size(neighbors1, neighbors2):
 
 
 def selection(consistency, threshold):
+    # noinspection PyTypeChecker
     return np.argwhere(consistency > threshold).flatten()
