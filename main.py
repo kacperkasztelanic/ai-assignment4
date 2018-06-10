@@ -32,13 +32,13 @@ def main():
     t = 0.81
     filtered_pairs = adjacency.filter_pairs(pairs, n=n, threshold=t)
     printer.print_image(PATHS, filtered_pairs, 'adjacency_n{}_t{}.png'.format(n, t))
-    ransac_ = ransac.Ransac(filtered_pairs, np.array(pairs))
+    ransac_ = ransac.Ransac(np.array(pairs), filtered_pairs)
 
     h = None
-    # h = heuristic.EuclideanDistanceHeuristic(PATHS, lower_limit=0.00, upper_limit=0.3)
+    h = heuristic.EuclideanDistanceHeuristic(PATHS, lower_limit=0.00, upper_limit=0.3)
     i = 100
     size = 3
-    e = 1
+    e = 10
     start = timer()
     ransac_.calculate(size=size, no_draws=i, max_error=e, heuristic=h)
     end = timer()
