@@ -36,7 +36,7 @@ class Ransac:
 
     def calculate_ransac_pairs(self, max_error):
         self._ransac_pairs = []
-        for pair in self.filtered_pairs:
+        for pair in self.all_pairs:
             if model_error(self.model, pair) < max_error:
                 self._ransac_pairs.append(pair)
 

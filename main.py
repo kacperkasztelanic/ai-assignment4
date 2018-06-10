@@ -38,7 +38,7 @@ def main():
     h = heuristic.EuclideanDistanceHeuristic(PATHS, lower_limit=0.00, upper_limit=0.3)
     i = 100
     size = 3
-    e = 10
+    e = 1
     start = timer()
     ransac_.calculate(size=size, no_draws=i, max_error=e, heuristic=h)
     end = timer()
