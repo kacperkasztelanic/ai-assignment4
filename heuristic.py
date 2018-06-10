@@ -30,3 +30,6 @@ class EuclideanDistanceHeuristic:
         min_ = np.min(dist)
         max_ = np.max(dist)
         return self.lower_limit <= min_  and max_ <= self.upper_limit
+
+
+# class ShapeHeuristic:

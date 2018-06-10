@@ -9,13 +9,12 @@ class Ransac:
         self.model = None
         self._ransac_pairs = []
 
-
     def calculate(self, size, no_draws, max_error, heuristic=None):
         self.ransac_model(size, no_draws, max_error, heuristic)
         self.calculate_ransac_pairs(max_error)
 
     def ransac_model(self, size, no_draws, max_error, heuristic):
-        pairs = self.filtered_pairs
+        pairs = self.all_pairs
         best_model = None
         best_score = 0
         for i in range(no_draws):
@@ -23,10 +22,10 @@ class Ransac:
             while model is None:
                 indices = np.random.choice(pairs.shape[0], size=size)
                 chosen = pairs[indices]
-                # if heuristic is None:
-                #     model = calc_model(chosen)
-                # else:
-                model = calc_model(chosen) if heuristic is None or heuristic.are_pairs_correct(chosen) else None
+                if heuristic is None or heuristic.are_pairs_correct(chosen):
+                    model = calc_model(chosen)
+                else:
+                    model = None
             score = 0
             for pair in pairs:
                 score += 1 if model_error(model, pair) < max_error else 0
@@ -37,15 +36,9 @@ class Ransac:
 
     def calculate_ransac_pairs(self, max_error):
         self._ransac_pairs = []
-        for pair in self.filtered_pairs:
+        for pair in self.all_pairs:
             if model_error(self.model, pair) < max_error:
                 self._ransac_pairs.append(pair)
-
-            # temp = self.model @ np.array([pair[0].coords[0], pair[0].coords[1], 1])
-            # if distance.cdist(np.reshape(pair[1].coords, newshape=(-1, 1)),
-            #                   np.reshape(np.array(temp[0], temp[1]), newshape=(-1, 1))).flatten()[0] < max_error:
-            #     # self._ransac_pairs.append((pair[0], Point((temp[0], temp[1]))))
-            #     self._ransac_pairs.append((pair[0], pair[1]))
 
     def get_ransac_pairs(self):
         return self._ransac_pairs
@@ -88,9 +81,9 @@ def is_invertible(a):
 
 
 def model_error(model, pair):
-    return distance.cdist(np.reshape(model @ np.array([pair[0].coords[0], pair[0].coords[1], 1]), newshape=(-1, 1)),
-                          np.array([pair[1].coords[0], pair[1].coords[1], 1]).reshape(-1, 1),
-                          metric='euclidean').flatten()[0]
+    return distance.cdist(np.reshape(model @ np.array([pair[0].coords[0], pair[0].coords[1], 1]), newshape=(1, -1)),
+                          np.array([pair[1].coords[0], pair[1].coords[1], 1]).reshape(1, -1),
+                          metric='euclidean')
 
 
 def calc_model(samples):
