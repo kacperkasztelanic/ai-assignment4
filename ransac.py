@@ -39,7 +39,7 @@ class Ransac:
         for pair in self.filtered_pairs:
             if model_error(self.model, pair) < max_error:
                 self._ransac_pairs.append(pair)
-                
+
     def get_ransac_pairs(self):
         return self._ransac_pairs
 
