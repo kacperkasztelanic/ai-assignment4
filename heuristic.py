@@ -43,4 +43,4 @@ class ShapeHeuristic:
     def check_pair(self, v):
         dist = distance.cdist(v, v, metric='euclidean')
         np.fill_diagonal(dist, dist[0, 1])
-        return np.min(dist) > self.upper_limit * np.max(dist)
+        return np.min(dist) / np.max(dist) > self.upper_limit
