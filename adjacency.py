@@ -1,56 +1,64 @@
 import numpy as np
 from scipy.spatial import distance
+import sys
 
 
-def find_pairs_euclidean(l1, l2):
-    v1 = np.array([x.vector for x in l1])
-    v2 = np.array([x.vector for x in l2])
-    distances = distance.cdist(v1, v2, metric='euclidean')
+def corresponding_points(l1, l2):
+    """
+    For each pair of FeaturedPoint finds euclidean distance of theirs vector, and returns pairs of points that are
+    closest to each others
+    :param l1: points from image 1
+    :param l2: points from image 2
+    :return:
+    """
+    distances = distance.cdist(
+        np.array([point.vector for point in l1]),
+        np.array([point.vector for point in l2]), metric='euclidean')
     pairs = []
     for i in range(len(l1)):
-        corresponding = np.argmin(distances[i])
-        if i == np.argmin(distances[:, corresponding]):
-            pairs.append((l1[i], l2[corresponding]))
-    return pairs
+        closest_column = np.argmin(distances[i])
+        if i == np.argmin(distances[:, closest_column]):
+            pairs.append([l1[i], l2[closest_column]])
+    return np.array(pairs)
 
 
 def filter_pairs(pairs, n, threshold):
-    points1 = np.array([x[0] for x in pairs])
-    points2 = np.array([x[1] for x in pairs])
-    dist1 = calc_dist(points1)
-    dist2 = calc_dist(points2)
-    neighbors1 = get_n_smallest(dist1, n)
-    neighbors2 = get_n_smallest(dist2, n)
-    consistency = get_equivalent_size(neighbors1, neighbors2)
-    indexes = selection(consistency, threshold)
-    return np.array(pairs)[indexes]
+    """
+    Filter pairs based on n and threshold
+    :param pairs: vector of pairs
+    :param n: Quantity of closest points
+    :param threshold: value in range 0.0 - 1.0
+    :return: filtered vector of pairs
+    """
+    neighbors1 = n_closest_points(pairs[:, 0], n)
+    neighbors2 = n_closest_points(pairs[:, 1], n)
+    consistency = corresponding_coverage(neighbors1, neighbors2)
+    return pairs[np.argwhere(consistency > threshold).flatten()]
 
 
-def calc_dist(points):
+def n_closest_points(points, n):
+    """
+    For set of a points finds Euclidean distance on Cartesian coordinate system for each permutation of points
+    Based on distance matrix finds n closest points for each points
+    :param points: set of Points 1xN
+    :param n: Quantity of closest points
+    :return: MxN
+    """
     v = np.array([p.coords for p in points])
-    return distance.cdist(v, v, metric='euclidean')
+    dist = distance.cdist(v, v, metric='euclidean')
+    return np.argsort(dist + np.eye(dist.shape[0]) * sys.maxsize, axis=1)[:, :n]
 
 
-def get_n_smallest(dist, n):
-    temp = np.argsort(dist, axis=1)[:, 0:n + 1]
-    col_size = dist.shape[0]
-    result = temp[:, 0:n]
-    for i in range(col_size):
-        for j in range(n):
-            if result[i, j] == i:
-                result[i, j] = temp[i, n]
-    return result
-
-
-def get_equivalent_size(neighbors1, neighbors2):
+def corresponding_coverage(neighbors1, neighbors2):
+    """
+    For corresponding points finds percentage how many closest points are matching on both images
+    :param neighbors1: matrix MxN
+    :param neighbors2: matrix MxN
+    :return: vector M contains values in range 0.0 - 1.0
+    """
     col_size = neighbors1.shape[0]
     result = np.zeros(col_size)
     for i in range(col_size):
         result[i] = np.intersect1d(neighbors1[i], neighbors2[i]).shape[0]
     result /= neighbors1.shape[1]
     return result
-
-
-def selection(consistency, threshold):
-    # noinspection PyTypeChecker
-    return np.argwhere(consistency > threshold).flatten()
