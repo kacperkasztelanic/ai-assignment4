@@ -60,6 +60,7 @@ def print_all_image(image_paths, key_points_1, key_points_2, accepted_pairs, ran
 
     result_path = os.path.join(os.path.dirname(image_paths[0]), filename)
     new_im.save(result_path)
+    return result_path
 
 
 # def add_lines(image_draw, pair, x_offset, scale=200):
